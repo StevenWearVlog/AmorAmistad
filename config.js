@@ -20,7 +20,7 @@ const SUPABASE_CONFIG = {
   anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indoa3ZyYW5ieGh4enFoaWFpa29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MjMyNzUsImV4cCI6MjEwNTM5OTI3NX0.2zs8HRQizsLaIYpKr-DJ0hgXOMGDO-AYBoJZQoLYk4Q',
 
   // PIN secreto para ver las respuestas directamente en la página web
-  adminPin: '1034399437'
+  adminPin: '1034'
 };
 
 // Exportar para uso en script.js
