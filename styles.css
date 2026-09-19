@@ -1,0 +1,847 @@
+/* ==========================================================================
+   GALINDA & WICKED - AMOR Y AMISTAD EDITION
+   Paleta: Rosa Chicle, Rosa Empolvado, Oro Rosa, Tiara Dorada y Brillos de Oz
+   ========================================================================== */
+
+:root {
+  --pink-vibrant: #ff4389;
+  --pink-bubble: #ff65a3;
+  --pink-medium: #ff8ebb;
+  --pink-soft: #ffc2db;
+  --pink-cotton: #ffe4f0;
+  --pink-lightest: #fff5fa;
+  --gold-tiara: #d97706;
+  --gold-shimmer: #fbbf24;
+  --gold-light: #fef3c7;
+  --rose-gold: #e8a598;
+  --lavender-ethereal: #e9d5ff;
+  --oz-emerald: #059669;
+  --oz-emerald-light: #d1fae5;
+  --text-dark: #3b0764;
+  --text-muted: #701a75;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 182, 217, 0.5);
+  --glass-shadow: 0 12px 40px rgba(255, 105, 180, 0.18);
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cinzel', serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-script: 'Alex Brush', cursive;
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: radial-gradient(circle at 10% 20%, #ffe4f0 0%, #fff5fa 40%, #fdf2f8 70%, #f3e8ff 100%);
+  color: var(--text-dark);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Canvas para partículas interactivas de cursor */
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Burbujas flotantes de fondo */
+.ambient-bubbles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-bubble {
+  position: absolute;
+  bottom: -80px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 182, 217, 0.4) 40%, rgba(233, 213, 255, 0.6) 70%, rgba(251, 191, 36, 0.3) 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(255, 105, 180, 0.25);
+  animation: floatUp 14s linear infinite;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.2s;
+}
+
+.floating-bubble::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 25%;
+  height: 25%;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.floating-bubble:hover {
+  transform: scale(1.15);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-115vh) scale(1.1) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   BARRA DE NAVEGACIÓN
+   ========================================================================== */
+.galinda-navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 250, 253, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 100;
+  box-shadow: 0 4px 25px rgba(255, 105, 180, 0.08);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.brand-crown {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.4));
+  animation: crownWobble 4s ease-in-out infinite;
+}
+
+@keyframes crownWobble {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(8deg) scale(1.05); }
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--pink-vibrant), #a21caf, var(--gold-tiara));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+  font-family: var(--font-script);
+  font-size: 1.1rem;
+  color: var(--pink-vibrant);
+  margin-left: -2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  position: relative;
+  padding: 0.3rem 0;
+  transition: var(--transition);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--pink-vibrant);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink-vibrant), var(--gold-shimmer));
+  transition: var(--transition);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.btn-magic-music {
+  background: linear-gradient(135deg, #fff0f6, #ffe4f0);
+  border: 1px solid var(--pink-soft);
+  color: var(--pink-vibrant);
+  padding: 0.5rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(255, 105, 180, 0.15);
+  transition: var(--transition);
+}
+
+.btn-magic-music:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--pink-cotton), var(--gold-light));
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+}
+
+.btn-secret-crown {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.btn-secret-crown:hover {
+  transform: scale(1.25) rotate(15deg);
+  filter: drop-shadow(0 0 8px var(--gold-shimmer));
+}
+
+/* ==========================================================================
+   AMOR Y AMISTAD BANNER HERO (CENTRAL Y PROMINENTE)
+   ========================================================================== */
+.amor-hero-section {
+  position: relative;
+  z-index: 2;
+  padding: 3.5rem 1.5rem 2.5rem;
+  text-align: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tiara-badge-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 247, 0.9));
+  border: 1px solid var(--gold-shimmer);
+  padding: 0.4rem 1.4rem;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.25);
+  margin-bottom: 1.5rem;
+  animation: pulseGold 3s infinite alternate;
+}
+
+@keyframes pulseGold {
+  0% { box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2); }
+  100% { box-shadow: 0 6px 25px rgba(255, 105, 180, 0.45); }
+}
+
+.tiara-badge-text {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  color: var(--gold-tiara);
+  text-transform: uppercase;
+}
+
+/* Título Centrado Solicitado */
+.amor-main-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  background: linear-gradient(135deg, #c026d3 0%, var(--pink-vibrant) 30%, #ec4899 60%, var(--gold-tiara) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 20px rgba(255, 105, 180, 0.3));
+}
+
+.amor-subheading {
+  font-family: var(--font-script);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  color: var(--pink-vibrant);
+  margin-bottom: 0.8rem;
+  text-shadow: 0 2px 8px rgba(255, 105, 180, 0.2);
+}
+
+.amor-description {
+  max-width: 680px;
+  margin: 0 auto 2.2rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.highlight-glinda {
+  color: var(--pink-vibrant);
+  font-weight: 700;
+}
+
+.hero-cta-group {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.btn-galinda-primary {
+  background: linear-gradient(135deg, var(--pink-vibrant), #db2777);
+  color: white;
+  padding: 0.9rem 2.2rem;
+  border-radius: 35px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(255, 67, 137, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: var(--transition);
+}
+
+.btn-galinda-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(255, 67, 137, 0.6);
+  background: linear-gradient(135deg, #f43f5e, var(--pink-vibrant));
+}
+
+.btn-galinda-secondary {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--pink-vibrant);
+  border: 2px solid var(--pink-soft);
+  padding: 0.9rem 1.8rem;
+  border-radius: 35px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+}
+
+.btn-galinda-secondary:hover {
+  background: var(--pink-cotton);
+  border-color: var(--pink-medium);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
+}
+
+/* ==========================================================================
+   SECCIÓN DE LA ENCUESTA DE OZ (AMOR Y AMISTAD)
+   ========================================================================== */
+.survey-section-wrapper {
+  position: relative;
+  z-index: 3;
+  padding: 3rem 1.5rem;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.survey-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--pink-soft);
+  border-radius: 28px;
+  padding: 2.8rem 2.2rem;
+  box-shadow: 0 20px 50px rgba(255, 105, 180, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.survey-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, var(--pink-vibrant), var(--gold-shimmer), var(--pink-bubble), var(--lavender-ethereal));
+}
+
+.survey-header-ribbon {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.survey-category-tag {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--pink-vibrant);
+  background: var(--pink-cotton);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+/* Pregunta exacta solicitada */
+.survey-main-question {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.survey-subtext {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Contenedor de Opciones: 'si', 'no', 'SHI', 'ÑO' */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 2.2rem 0;
+}
+
+@media (max-width: 600px) {
+  .options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.survey-option-label {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 0.8rem;
+  background: rgba(255, 245, 250, 0.7);
+  border: 2px solid var(--pink-soft);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.survey-option-label input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option-icon {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  transition: transform 0.3s;
+}
+
+.option-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--text-dark);
+}
+
+/* Estado al pasar el cursor */
+.survey-option-label:hover {
+  transform: translateY(-4px);
+  border-color: var(--pink-vibrant);
+  background: rgba(255, 235, 245, 0.95);
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
+}
+
+.survey-option-label:hover .option-icon {
+  transform: scale(1.2);
+}
+
+/* Estado Seleccionado */
+.survey-option-label.selected {
+  background: linear-gradient(135deg, #ffe4f0, #ffc2db);
+  border-color: var(--pink-vibrant);
+  box-shadow: 0 10px 25px rgba(255, 67, 137, 0.35);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.survey-option-label.selected .option-title {
+  color: var(--pink-vibrant);
+}
+
+/* Opciones Especiales: SHI con brillos dorados */
+.survey-option-label.special-shi {
+  border-color: var(--gold-shimmer);
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.6), rgba(255, 240, 247, 0.8));
+}
+
+.survey-option-label.special-shi.selected {
+  background: linear-gradient(135deg, #fffbeb, #ffc2db);
+  border-color: var(--gold-tiara);
+  box-shadow: 0 10px 25px rgba(251, 191, 36, 0.45);
+}
+
+/* Caja de recomendaciones solicitada */
+.recommendations-box-wrapper {
+  margin: 2rem 0 1.5rem;
+}
+
+.recommendations-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+}
+
+.recommendations-textarea {
+  width: 100%;
+  min-height: 120px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--pink-soft);
+  border-radius: 18px;
+  padding: 1.1rem;
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  color: var(--text-dark);
+  resize: vertical;
+  transition: var(--transition);
+  outline: none;
+}
+
+.recommendations-textarea:focus {
+  border-color: var(--pink-vibrant);
+  box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.2);
+  background: #ffffff;
+}
+
+.recommendations-textarea::placeholder {
+  color: #a855f7;
+  opacity: 0.65;
+}
+
+.submit-survey-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--pink-vibrant) 0%, #d946ef 50%, var(--pink-bubble) 100%);
+  color: white;
+  padding: 1.1rem 2rem;
+  border-radius: 35px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 67, 137, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  transition: var(--transition);
+}
+
+.submit-survey-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255, 67, 137, 0.6);
+  filter: brightness(1.05);
+}
+
+.submit-survey-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mensaje de confirmación en la tarjeta */
+.survey-success-screen {
+  display: none;
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+
+.survey-success-screen.active {
+  display: block;
+  animation: fadeInPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeInPop {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.success-icon-bubble {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 1.5rem;
+  background: linear-gradient(135deg, var(--pink-cotton), var(--gold-light));
+  border: 2px solid var(--gold-shimmer);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+}
+
+.success-title {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  color: var(--pink-vibrant);
+  margin-bottom: 0.8rem;
+}
+
+.success-message {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+}
+
+.response-badge-summary {
+  display: inline-block;
+  background: var(--pink-cotton);
+  border: 1px solid var(--pink-medium);
+  padding: 0.6rem 1.4rem;
+  border-radius: 25px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* ==========================================================================
+   PANEL SECRETO DE ADMINISTRACIÓN (RESULTADOS)
+   ========================================================================== */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.admin-modal-overlay.active {
+  display: flex;
+}
+
+.admin-modal-card {
+  background: white;
+  width: 100%;
+  max-width: 800px;
+  max-height: 85vh;
+  border-radius: 28px;
+  border: 2px solid var(--gold-shimmer);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-modal-header {
+  background: linear-gradient(135deg, #ffe4f0, #fef3c7);
+  padding: 1.4rem 2rem;
+  border-bottom: 1px solid var(--pink-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--gold-tiara);
+  font-weight: 800;
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.admin-modal-body {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.pin-screen-box {
+  text-align: center;
+  max-width: 380px;
+  margin: 1.5rem auto;
+}
+
+.admin-pin-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--pink-soft);
+  border-radius: 14px;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 6px;
+  margin-bottom: 1.2rem;
+  outline: none;
+}
+
+.admin-pin-input:focus {
+  border-color: var(--pink-vibrant);
+}
+
+.responses-table-wrapper {
+  overflow-x: auto;
+}
+
+.responses-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.responses-table th {
+  background: var(--pink-cotton);
+  color: var(--text-dark);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  padding: 0.9rem;
+  text-align: left;
+}
+
+.responses-table td {
+  padding: 1rem 0.9rem;
+  border-bottom: 1px solid var(--pink-cotton);
+  font-size: 0.9rem;
+}
+
+.badge-answer {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.badge-answer.SHI, .badge-answer.si {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-answer.ÑO, .badge-answer.no {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ==========================================================================
+   PIE DE PÁGINA DE OZ
+   ========================================================================== */
+.galinda-footer {
+  background: linear-gradient(180deg, transparent 0%, #ffe4f0 100%);
+  padding: 4rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--glass-border);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-quote {
+  font-family: var(--font-script);
+  font-size: 2.2rem;
+  color: var(--pink-vibrant);
+  margin-bottom: 1rem;
+}
+
+.footer-credits {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+}
+
+.footer-signature {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: var(--gold-tiara);
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .amor-hero-section {
+    padding-top: 2rem;
+  }
+  .survey-card {
+    padding: 1.8rem 1.2rem;
+  }
+  .options-grid {
+    gap: 0.6rem;
+  }
+  .survey-option-label {
+    padding: 1rem 0.5rem;
+  }
+}
+

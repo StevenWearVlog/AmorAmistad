@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wicked ✨ Feliz Día de Amor y Amistad Mi Reina Bella</title>
+
+  <!-- Google Fonts: Playfair Display, Cinzel, Plus Jakarta Sans, Alex Brush -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS Client SDK via CDN (para conexión a base de datos) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Hoja de Estilos -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Canvas para estela de polvillo de estrellas con cursor -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Contenedor para burbujas flotantes interactivas -->
+  <div class="ambient-bubbles-container" id="bubbles-container"></div>
+
+  <!-- BARRA DE NAVEGACIÓN GLINDA CHIC -->
+  <nav class="galinda-navbar">
+    <div class="nav-container">
+      <a href="#inicio" class="brand-logo">
+        <span class="brand-crown">👑</span>
+        <div>
+          <span class="brand-title">GLINDA</span>
+          <span class="brand-subtitle">Nataly</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#inicio" class="nav-link">Inicio</a></li>
+        <li><a href="#invitacion-oz" class="nav-link">Invitación Especial</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="btn-music-toggle" class="btn-magic-music" title="Activar melodía mágica de Oz">
+          🎵 Música de Oz ✨
+        </button>
+        <!-- Botón secreto para ver respuestas de la encuesta -->
+        <button class="btn-secret-crown" title="Acceso de Administración" aria-label="Administración">
+          ✨
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SECCIÓN HERO PRINCIPAL DE AMOR Y AMISTAD -->
+  <header id="inicio" class="amor-hero-section">
+  
+
+    </div>
+
+    <!-- TÍTULO PRINCIPAL CENTRADO SOLICITADO -->
+    <h1 class="amor-main-title">
+      FELIZ DIA DE AMOR Y AMISTAD MI REINA BELLA
+    </h1>
+
+    <p class="amor-subheading">
+      Me inspire de tu persona favorita en todo el reino de Oz 💖
+    </p>
+
+    <p class="amor-description">
+      Inspirado en la magia, el glamour y los colores de <span class="highlight-glinda">Glinda (Ariana Grande)</span>. 
+      Donde el rosa y el dorado iluminan los momentos más especiales de nuestras vidas.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="#invitacion-oz" class="btn-galinda-primary">
+        <span>Mi amor porfa responde la Invitación Real</span> 💌
+      </a>
+    </div>
+  </header>
+
+  <section id="invitacion-oz" class="survey-section-wrapper">
+    <div class="survey-card">
+      <div class="survey-header-ribbon">
+        <span class="survey-category-tag">📜 Invitación Oficial de Amor y Amistad</span>
+        
+        <!-- PREGUNTA EXACTA SOLICITADA -->
+        <h2 class="survey-main-question">
+          ¿Estás invitada el día de mañana 20 de septiembre 2026?
+        </h2>
+        <p class="survey-subtext">
+          Selecciona tu respuesta con la varita mágica y déjame tus anhelos para celebrar 🪄
+        </p>
+      </div>
+
+      <!-- FORMULARIO DE RESPUESTA -->
+      <form id="amor-survey-form">
+        <!-- OPCIONES SOLICITADAS: 'si', 'no', 'SHI', 'ÑO' -->
+        <div class="options-grid">
+          
+          <!-- Opción 'si' -->
+          <label class="survey-option-label" data-value="si">
+            <input type="radio" name="answer_choice" value="si" required>
+            <span class="option-icon">🌸</span>
+            <span class="option-title">si</span>
+          </label>
+
+          <!-- Opción 'no' -->
+          <label class="survey-option-label" data-value="no">
+            <input type="radio" name="answer_choice" value="no">
+            <span class="option-icon">🙈</span>
+            <span class="option-title">no</span>
+          </label>
+
+          <!-- Opción 'SHI' (Especial con brillos y corazones) -->
+          <label class="survey-option-label special-shi" data-value="SHI">
+            <input type="radio" name="answer_choice" value="SHI">
+            <span class="option-icon">💖</span>
+            <span class="option-title">SHI ✨</span>
+          </label>
+
+          <!-- Opción 'ÑO' (Especial) -->
+          <label class="survey-option-label" data-value="ÑO">
+            <input type="radio" name="answer_choice" value="ÑO">
+            <span class="option-icon">🎀</span>
+            <span class="option-title">ÑO</span>
+          </label>
+
+        </div>
+
+        <!-- CAJA DE RECOMENDACIONES SOLICITADA -->
+        <div class="recommendations-box-wrapper">
+          <label for="recommendations-input" class="recommendations-label">
+            🧁 Recomendaciones que te gustaría hacer para celebrar y tenerlas en cuenta para el día de mañana tipo (comida, juegos, etc... lo que se te ocurra):
+          </label>
+          <textarea 
+            id="recommendations-input" 
+            class="recommendations-textarea" 
+            placeholder="Escribe aquí tus antojitos favoritos, qué te gustaría comer, planes o juegos que sueñas hacer mañana... ¡todo lo que se te ocurra para consentirte! 💕"
+          ></textarea>
+        </div>
+
+        <!-- Botón de Envío -->
+        <button type="submit" id="submit-survey-btn" class="submit-survey-btn">
+          <span>Enviar mi respuesta mágica a Johan</span> 🪄✨
+        </button>
+      </form>
+
+      <!-- PANTALLA DE CONFIRMACIÓN AL ENVIAR -->
+      <div id="survey-success-screen" class="survey-success-screen">
+        <div class="success-icon-bubble">✨👑✨</div>
+        <h3 class="success-title">¡Respuesta Enviada a Oz!</h3>
+        <p class="success-message">
+          Tu mensaje y recomendaciones han quedado sellados con polvillo de hadas de Galinda. ¡Mañana 20 de septiembre será un día inolvidable y digno de una reina!
+        </p>
+        <div id="summary-answer-badge" class="response-badge-summary">
+          Respuesta guardada con amor 💖
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL SECRETO DE ADMINISTRACIÓN (PARA VER RESULTADOS) -->
+  <div id="admin-modal-overlay" class="admin-modal-overlay">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <div class="admin-modal-title">👑 Panel Secreto de Respuestas de Oz</div>
+        <button id="btn-close-admin-modal" class="btn-close-modal">&times;</button>
+      </div>
+
+      <div class="admin-modal-body">
+        
+        <!-- Pantalla de PIN -->
+        <div id="admin-pin-screen" class="pin-screen-box">
+          <p style="margin-bottom: 1rem; color: var(--text-dark); font-weight: 600;">
+            Introduce el PIN secreto para ver lo que respondió tu reina bella:
+          </p>
+          <input type="password" id="admin-pin-input" class="admin-pin-input" placeholder="••••" maxlength="6">
+          <button id="btn-submit-pin" class="submit-survey-btn" style="padding: 0.8rem;">
+            Desbloquear Respuestas ✨
+          </button>
+          <p style="font-size: 0.8rem; color: #a855f7; margin-top: 0.8rem;">
+            (PIN por defecto configurado: <strong>2026</strong>)
+          </p>
+        </div>
+
+        <!-- Pantalla de Datos y Respuestas -->
+        <div id="admin-data-screen" style="display: none;">
+          <h4 style="margin-bottom: 0.5rem; font-family: var(--font-display); color: var(--pink-vibrant);">
+            Respuestas Registradas:
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Sincronizado con Supabase y respaldo en almacenamiento local.
+          </p>
+
+          <div id="admin-empty-message" style="display: none; text-align: center; padding: 2rem; color: var(--text-muted);">
+            Aún no se han enviado respuestas. ¡Comparte el enlace con ella para verla responder! 💌
+          </div>
+
+          <div class="responses-table-wrapper">
+            <table class="responses-table">
+              <thead>
+                <tr>
+                  <th>Fecha y Hora</th>
+                  <th>Respuesta</th>
+                  <th>Recomendaciones / Comida / Juegos</th>
+                </tr>
+              </thead>
+              <tbody id="admin-responses-tbody">
+                <!-- Se llena dinámicamente con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="galinda-footer">
+    <p class="footer-quote">
+      "Because I knew you... I have been changed for good."
+    </p>
+    <p class="footer-credits">
+      Creado con amor infinito para celebrar el Día de Amor y Amistad • Cita del 20 de Septiembre de 2026.
+    </p>
+    <div class="footer-signature">
+      ✨ CON AMOR, DE STEVEN PARA MI REINA BELLA ✨
+    </div>
+    <div style="margin-top: 1.5rem;">
+      <button class="crown-admin-trigger" style="background:none; border:none; color: var(--text-muted); font-size: 0.8rem; cursor:pointer; text-decoration: underline;">
+        👑 Acceso Secreto Administrador
+      </button>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
