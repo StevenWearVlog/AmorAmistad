@@ -11,6 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initAdminModal();
 });
 
+// Helper global para inicializar y sanitizar cliente de Supabase
+function getSupabaseClient() {
+  if (!window.supabase || !window.SUPABASE_CONFIG || !window.SUPABASE_CONFIG.url || !window.SUPABASE_CONFIG.anonKey) {
+    return null;
+  }
+  // Limpia la URL de cualquier /rest/v1/ o barras extras al final
+  const cleanUrl = window.SUPABASE_CONFIG.url.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+  const cleanKey = window.SUPABASE_CONFIG.anonKey.trim();
+  return window.supabase.createClient(cleanUrl, cleanKey);
+}
+
 // ==========================================================================
 // 1. EFECTO DE PARTÍCULAS DE ESTRELLA (CURSOR SPARKLE TRAIL)
 // ==========================================================================
@@ -413,33 +424,26 @@ function initSurveyForm() {
       // 1. Guardar siempre en localStorage como respaldo seguro
       saveLocalResponse(responseData);
 
-      // 2. Intentar guardar en Supabase si está configurado
-      let supabaseSuccess = false;
-      if (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url && window.SUPABASE_CONFIG.anonKey) {
-        try {
-          const supabaseUrl = window.SUPABASE_CONFIG.url.trim();
-          const supabaseKey = window.SUPABASE_CONFIG.anonKey.trim();
+      // 2. Guardar en Supabase
+      try {
+        const client = getSupabaseClient();
+        if (client) {
+          const { data, error } = await client
+            .from('love_survey_responses')
+            .insert([{
+              answer: responseData.answer,
+              recommendations: responseData.recommendations,
+              author_name: responseData.author_name
+            }]);
 
-          // Inicializar cliente si la librería supabase-js está cargada
-          if (window.supabase) {
-            const client = window.supabase.createClient(supabaseUrl, supabaseKey);
-            const { error } = await client
-              .from('love_survey_responses')
-              .insert([{
-                answer: responseData.answer,
-                recommendations: responseData.recommendations,
-                author_name: responseData.author_name
-              }]);
-
-            if (!error) {
-              supabaseSuccess = true;
-            } else {
-              console.warn('Error al insertar en Supabase:', error);
-            }
+          if (error) {
+            console.error('❌ Error al guardar en Supabase:', error);
+          } else {
+            console.log('✅ ¡Guardado exitosamente en Supabase!', data);
           }
-        } catch (err) {
-          console.warn('Error de conexión con Supabase:', err);
         }
+      } catch (err) {
+        console.warn('Advertencia de conexión con Supabase:', err);
       }
 
       // Mostrar pantalla de éxito
@@ -549,9 +553,9 @@ function initAdminModal() {
     let allResponses = [];
 
     // 1. Cargar desde Supabase si existe configuración
-    if (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url && window.SUPABASE_CONFIG.anonKey && window.supabase) {
-      try {
-        const client = window.supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey);
+    try {
+      const client = getSupabaseClient();
+      if (client) {
         const { data, error } = await client
           .from('love_survey_responses')
           .select('*')
@@ -559,10 +563,12 @@ function initAdminModal() {
 
         if (!error && data && data.length > 0) {
           allResponses = data;
+        } else if (error) {
+          console.warn('Error al leer de Supabase:', error);
         }
-      } catch (e) {
-        console.warn('No se pudo conectar a Supabase, cargando datos locales:', e);
       }
+    } catch (e) {
+      console.warn('No se pudo conectar a Supabase, cargando datos locales:', e);
     }
 
     // 2. Si no hay de Supabase, cargar desde localStorage
